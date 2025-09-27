@@ -1,0 +1,6 @@
+Flask>=2.3.2
+Flask-SQLAlchemy>=3.0.3
+requests>=2.31.0
+python-dotenv>=1.0.0
+google-generativeai>=0.8.5
+pyTelegramBotAPI>=4.12.0
