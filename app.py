@@ -22,7 +22,7 @@ db = SQLAlchemy(app)
 # Загрузка переменных окружения
 load_dotenv()
 APP_URL = os.getenv("APP_URL")
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")  # токен вашего Telegram бота
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # токен вашего Telegram бота
 WEBHOOK_PATH = "/webhook"
 
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
@@ -47,7 +47,7 @@ with app.app_context():
 
 # Настройка API-ключа Gemini
 try:
-    genai.configure(api_key=os.getenv("GENAI_KEY"))  # используем .env
+    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))  # используем .env
 except Exception as e:
     print(f"Ошибка при настройке API-ключа: {e}")
 
@@ -135,6 +135,13 @@ def start_command(message):
 
 # ---------- Запуск Flask ----------
 if __name__ == "__main__":
-    # Для локального HTTPS с mkcert
-    app.run(host="0.0.0.0", port=5000, debug=True,
-            ssl_context=("localhost+2.pem", "localhost+2-key.pem"))
+    if os.getenv("RENDER"):  # признак, что мы на Render
+        app.run(host="0.0.0.0", port=5000)
+    else:
+        # Локальный запуск с HTTPS (mkcert)
+        app.run(
+            host="0.0.0.0",
+            port=5000,
+            debug=True,
+            ssl_context=("localhost+2.pem", "localhost+2-key.pem")
+        )
