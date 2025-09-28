@@ -21,15 +21,12 @@ db = SQLAlchemy(app)
 
 # Загрузка переменных окружения
 load_dotenv()
-APP_URL = os.getenv("APP_URL")
+
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # токен вашего Telegram бота
 WEBHOOK_PATH = "/webhook"
 
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
-@app.route("/config")
-def config():
-    return jsonify({"APP_URL": APP_URL})
 
 # Модель базы данных для хранения результатов
 class Result(db.Model):
